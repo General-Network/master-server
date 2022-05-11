@@ -4,8 +4,10 @@ import com.google.gson.GsonBuilder
 import de.dominik48n.generalnetwork.master.config.Document
 import de.dominik48n.generalnetwork.master.network.DefaultNetworkProvider
 import de.dominik48n.generalnetwork.master.network.handler.NetworkHandler
+import de.dominik48n.generalnetwork.master.network.packet.`in`.PacketInConnectServer
 import de.dominik48n.generalnetwork.master.network.packet.handler.PacketDecoder
 import de.dominik48n.generalnetwork.master.network.packet.handler.PacketEncoder
+import de.dominik48n.generalnetwork.master.server.Server
 import org.apache.log4j.Logger
 import java.io.File
 
@@ -15,6 +17,7 @@ class MasterServer {
         lateinit var INSTANCE: MasterServer
     }
 
+    val servers = HashMap<String, Server>()
     val logger = Logger.getLogger("Master-Server")
     val gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
 
@@ -45,6 +48,8 @@ class MasterServer {
     private fun prepareNettyServer() {
         this.defaultNetworkProvider = DefaultNetworkProvider()
         this.defaultNetworkProvider.start()
+
+        this.defaultNetworkProvider.packetRegistry.addIncomingPacket(1, PacketInConnectServer::class.java)
 
         this.defaultNetworkProvider.nettyServer.startServer(
             this.masterConfig.getDocument("network").getIntValue("master-port")
