@@ -1,6 +1,7 @@
 package de.dominik48n.generalnetwork.master
 
 import com.google.gson.GsonBuilder
+import de.dominik48n.generalnetwork.master.command.CommandManager
 import de.dominik48n.generalnetwork.master.config.Document
 import de.dominik48n.generalnetwork.master.network.DefaultNetworkProvider
 import de.dominik48n.generalnetwork.master.network.handler.NetworkHandler
@@ -19,6 +20,7 @@ class MasterServer {
         lateinit var INSTANCE: MasterServer
     }
 
+    val commandManager = CommandManager()
     val servers = HashMap<String, Server>()
     val logger = Logger.getLogger("Master-Server")
     val gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
@@ -30,6 +32,8 @@ class MasterServer {
         this.logger.info("Starting Master Server...")
 
         INSTANCE = this
+
+        this.commandManager.start()
 
         this.prepareConfig()
         this.prepareNettyServer()
