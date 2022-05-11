@@ -5,6 +5,7 @@ import de.dominik48n.generalnetwork.master.config.Document
 import de.dominik48n.generalnetwork.master.network.DefaultNetworkProvider
 import de.dominik48n.generalnetwork.master.network.handler.NetworkHandler
 import de.dominik48n.generalnetwork.master.network.packet.`in`.PacketInConnectServer
+import de.dominik48n.generalnetwork.master.network.packet.`in`.PacketInUpdateServer
 import de.dominik48n.generalnetwork.master.network.packet.handler.PacketDecoder
 import de.dominik48n.generalnetwork.master.network.packet.handler.PacketEncoder
 import de.dominik48n.generalnetwork.master.server.Server
@@ -50,6 +51,7 @@ class MasterServer {
         this.defaultNetworkProvider.start()
 
         this.defaultNetworkProvider.packetRegistry.addIncomingPacket(1, PacketInConnectServer::class.java)
+        this.defaultNetworkProvider.packetRegistry.addIncomingPacket(2, PacketInUpdateServer::class.java)
 
         this.defaultNetworkProvider.nettyServer.startServer(
             this.masterConfig.getDocument("network").getIntValue("master-port")
