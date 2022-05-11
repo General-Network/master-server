@@ -109,6 +109,10 @@ class Document(private val jsonObject: JsonObject) {
         return Document(this.jsonObject.get(key).asJsonObject)
     }
 
+    fun contains(key: String): Boolean {
+        return this.jsonObject.has(key)
+    }
+
     fun getAsJsonObject(): JsonObject {
         return this.jsonObject
     }
