@@ -10,9 +10,11 @@ import de.dominik48n.generalnetwork.master.network.packet.`in`.PacketInGetPlayer
 import de.dominik48n.generalnetwork.master.network.packet.`in`.PacketInUpdateServer
 import de.dominik48n.generalnetwork.master.network.packet.handler.PacketDecoder
 import de.dominik48n.generalnetwork.master.network.packet.handler.PacketEncoder
+import de.dominik48n.generalnetwork.master.network.packet.out.PacketOutShutdownServer
 import de.dominik48n.generalnetwork.master.server.Server
 import org.apache.log4j.Logger
 import java.io.File
+import kotlin.system.exitProcess
 
 class MasterServer {
 
@@ -43,6 +45,8 @@ class MasterServer {
         this.logger.info("Stopping Master Server...")
 
         this.defaultNetworkProvider.nettyServer.stopServer()
+
+        exitProcess(0)
     }
 
     private fun prepareConfig() {
@@ -58,6 +62,8 @@ class MasterServer {
         this.defaultNetworkProvider.packetRegistry.addIncomingPacket(1, PacketInConnectServer::class.java)
         this.defaultNetworkProvider.packetRegistry.addIncomingPacket(2, PacketInUpdateServer::class.java)
         this.defaultNetworkProvider.packetRegistry.addIncomingPacket(3, PacketInGetPlayers::class.java)
+
+        this.defaultNetworkProvider.packetRegistry.addOutgoingPacket(4, PacketOutShutdownServer::class.java)
 
         this.defaultNetworkProvider.nettyServer.startServer(
             this.masterConfig.getDocument("network").getIntValue("master-port")

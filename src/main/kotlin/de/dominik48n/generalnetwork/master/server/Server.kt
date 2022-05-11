@@ -9,7 +9,7 @@ class Server(val name: String, private val channel: Channel, val serverType: Ser
 
     constructor(name: String, channel: Channel, serverType: ServerType) : this(name, channel, serverType, HashSet())
 
-    fun sendPacket(packet: Class<out Packet>) {
+    fun sendPacket(packet: Packet) {
         this.channel.writeAndFlush(packet)
     }
 

@@ -10,6 +10,7 @@ class CommandManager {
 
     init {
         this.commands["help"] = HelpCommand()
+        this.commands["shutdown"] = ShutdownCommand()
     }
 
     fun start() {
